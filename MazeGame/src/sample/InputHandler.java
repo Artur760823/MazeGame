@@ -16,19 +16,25 @@ public class InputHandler {
     public void onKeyPressed(KeyEvent event) {
 
         GameObject player = model.getPlayer();
-        if(event.getCode() == KeyCode.RIGHT) {
-            player.setX(player.getX() + 10);
+        if (event.getCode() == KeyCode.RIGHT) {
+            if (model.canMove(player.getX() + 5, player.getY())) {
+                player.setX(player.getX() + 5);
+            }
         }
-        if(event.getCode() == KeyCode.LEFT) {
-            player.setX(player.getX() - 10);
+        if (event.getCode() == KeyCode.LEFT) {
+            if (model.canMove(player.getX() - 5, player.getY())) {
+                player.setX(player.getX() - 5);
+            }
         }
-        if(event.getCode() == KeyCode.UP) {
-            player.setY(player.getY() - 10);
+        if (event.getCode() == KeyCode.UP) {
+            if (model.canMove(player.getX(), player.getY() - 5)) {
+                player.setY(player.getY() - 5);
+            }
         }
-        if(event.getCode() == KeyCode.DOWN) {
-            player.setY(player.getY() + 10);
+        if (event.getCode() == KeyCode.DOWN) {
+            if (model.canMove(player.getX(), player.getY() + 5)) {
+                player.setY(player.getY() + 5);
+            }
         }
-
     }
-
 }

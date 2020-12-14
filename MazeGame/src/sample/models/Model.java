@@ -1,19 +1,20 @@
 package sample.models;
-import javafx.scene.media.Media;
-import javafx.scene.paint.Color;
 
-import javax.imageio.plugins.tiff.ExifTIFFTagSet;
-import java.nio.file.Paths;
+import javafx.scene.paint.Color;
+import sample.Timer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Model {
 
+    Timer clock = new Timer();
     int width;
     int height;
 
-    private Player player = new Player(250, 650);
+    private Player player = new Player(250, 640);
+    //Exit Object
     private Exit exit = new Exit(600, 0, 50, 20, Color.RED);
     private Wall wallFirstOne = new Wall(650, 0, 550, 20);
     private Wall wallFirstTwo = new Wall(0, 0, 600, 20);
@@ -36,6 +37,9 @@ public class Model {
     private Wall wallNinthOne = new Wall(1000, 600, 200, 20);
     private Wall wallNinthTwo = new Wall(0, 600, 950, 20);
     private Wall wallBottom = new Wall(0, 675, 1200, 75);
+
+    private int counter = 1000;
+    private Clock reverseClock = new Clock(0, 750, 50, 50, Color.WHITE, clock.clock(counter));
 
 
     protected ArrayList<Wall> walls = new ArrayList<>();
@@ -65,7 +69,14 @@ public class Model {
         return player;
     }
 
-    public Exit getExit() {return exit;}
+    //Exit Geter
+    public Exit getExit() {
+        return exit;
+    }
+
+    public Clock getClock() {
+        return reverseClock;
+    }
 
     public Wall getWallTopOne() {
         return wallFirstOne;
@@ -199,15 +210,12 @@ public class Model {
         walls.add(wallBottom);
     }
 
-    private boolean playerObjectCollider(GameObject otherObject) {
+    private boolean playerObjectCollider(Player player, GameObject otherObject) {
         boolean horizontalCollide = false;
-
         int squareLeft = player.getX();
         int squareRight = player.getX() + player.getWidth();
-
         int otherObjectLeft = otherObject.getX();
         int otherObjectRight = otherObject.getX() + otherObject.getWidth();
-
         if (squareRight > otherObjectLeft && squareLeft < otherObjectRight) {
             horizontalCollide = true;
         }
@@ -231,38 +239,22 @@ public class Model {
 
     private Dimond dimondCollider() {
         for (Dimond dimond : dimonds) {
-            if (playerObjectCollider(dimond)) {
+            if (playerObjectCollider(player, dimond)) {
                 return dimond;
             }
         }
         return null;
     }
 
-    private boolean wallCollider() {
-        for (Wall wall : walls) {
-            if (playerObjectCollider(wall)) {
+    private boolean wallCollider(Player player) {
+        for (Wall item : walls) {
+            if (playerObjectCollider(player, item))
                 return true;
-            }
         }
         return false;
     }
 
-
-    //TODO check why y gets problems
     public void update(long deltaMillis) {
-        for (Wall item : walls) {
-            if (wallCollider()) {
-                if (player.getX() < item.getX()) {
-                    player.setX(player.getX() + 10);
-                } else if (player.getX() > item.getX()) {
-                    player.setX(player.getX() - 10);
-                } else if (player.getY() > item.getY()) {
-                    player.setY(player.getY() - 10);
-                } else if (player.getY() < item.getY()) {
-                    player.setY(player.getY() + 10);
-                }
-            }
-        }
 
         Dimond hitDimond = dimondCollider();
         if (hitDimond != null) {
@@ -271,5 +263,11 @@ public class Model {
         }
     }
 
-
+    public boolean canMove(int x, int y) {
+        Player dummyPlayer = new Player(x, y);
+        if (wallCollider(dummyPlayer)) {
+            return false;
+        }
+        return true;
+    }
 }

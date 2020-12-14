@@ -5,7 +5,7 @@ import javafx.animation.AnimationTimer;
 
 public class Timer extends AnimationTimer {
 
-    private int counter = 0;
+    public int counter = 1000;
     private Model model;
     private Graphics graphics;
 
@@ -15,6 +15,11 @@ public class Timer extends AnimationTimer {
         this.model = model;
         this.graphics = graphics;
     }
+
+    public Timer() {
+
+    }
+
 
     @Override
     public void handle(long now) {
@@ -29,8 +34,14 @@ public class Timer extends AnimationTimer {
 
         lastMillis = millis;
         graphics.draw();
+        counter--;
     }
 
+
+    public String clock(int counter) {
+        counter--;
+        return String.format("%d", counter);
+    }
 
 }
 

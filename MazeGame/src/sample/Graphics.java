@@ -26,9 +26,15 @@ public class Graphics {
         gc.setFill(player.getColor());
         gc.fillRect(player.getX(), player.getY(), player.getWidth(), player.getHeight());
 
+        // Draw Exit
         Exit exit = model.getExit();
         gc.setFill(exit.getColor());
         gc.fillRect(exit.getX(), exit.getY(), exit.getWidth(), exit.getHeight());
+
+        // Draw Clock
+        Clock reverseClock = model.getClock();
+        gc.setFill(reverseClock.getColor());
+        gc.fillRect(reverseClock.getX(), reverseClock.getY(), reverseClock.getWidth(), reverseClock.getHeight());
 
         for (Wall wall: model.getWalls()){
             gc.setFill(wall.getColor());
