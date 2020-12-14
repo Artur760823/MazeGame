@@ -1,9 +1,8 @@
 package sample.models;
-
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 
+import javax.imageio.plugins.tiff.ExifTIFFTagSet;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,8 @@ public class Model {
     int width;
     int height;
 
-    private Player player = new Player(100, 100);
+    private Player player = new Player(250, 650);
+    private Exit exit = new Exit(600, 0, 50, 20, Color.RED);
     private Wall wallFirstOne = new Wall(650, 0, 550, 20);
     private Wall wallFirstTwo = new Wall(0, 0, 600, 20);
     private Wall wallLeft = new Wall(0, 0, 20, 750);
@@ -64,6 +64,8 @@ public class Model {
     public Player getPlayer() {
         return player;
     }
+
+    public Exit getExit() {return exit;}
 
     public Wall getWallTopOne() {
         return wallFirstOne;
@@ -244,14 +246,6 @@ public class Model {
         }
         return false;
     }
-//function with sound effect //TODO
-//    MediaPlayer mediaPlayer;
-//    private void pingSound(){
-//        String sound = "ping.wav";
-//        Media soundPing = new Media(Paths.get(sound).toUri().toString());
-//        mediaPlayer = new MediaPlayer(soundPing);
-//        mediaPlayer.play();
-//    }
 
 
     //TODO check why y gets problems
@@ -263,29 +257,17 @@ public class Model {
                 } else if (player.getX() > item.getX()) {
                     player.setX(player.getX() - 10);
                 } else if (player.getY() > item.getY()) {
-                    player.setY(player.getY());
+                    player.setY(player.getY() - 10);
                 } else if (player.getY() < item.getY()) {
-                    player.setY(player.getY());
+                    player.setY(player.getY() + 10);
                 }
             }
         }
-//        if (wallCollider()) {
-//            if (player.getX() < wallFirstOne.getX()) {
-//                player.setX(player.getX() + 10);
-//            } else if (player.getX() > wallFirstOne.getX()) {
-//                player.setX(player.getX() - 10);
-//            } else if (player.getY() > wallFirstOne.getY()) {
-//                player.setY(player.getY() - 10);
-//            } else if (player.getY() < wallFirstOne.getY()) {
-//                player.setY(player.getY() + 10);
-//            }
-//        }
 
         Dimond hitDimond = dimondCollider();
         if (hitDimond != null) {
             System.out.println("KA-SHING! " + hitDimond.getCoinId());
             dimonds.remove(hitDimond);
-//            pingSound();
         }
     }
 
