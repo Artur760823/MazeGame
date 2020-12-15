@@ -1,5 +1,6 @@
 package sample.models;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class GameObject {
@@ -8,6 +9,7 @@ public class GameObject {
     private int width;
     private int height;
     private Color color;
+    private Image shape;
 
     public GameObject(int x, int y, int width, int height, Color color) {
         this.x = x;
@@ -15,6 +17,14 @@ public class GameObject {
         this.width = width;
         this.height = height;
         this.color = color;
+    }
+
+    public GameObject(int x, int y,int width, int height, Image shape) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.shape = shape;
     }
 
     public GameObject(int x, int y, int width, int height) {
@@ -62,5 +72,9 @@ public class GameObject {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Image getShape() {
+        return shape;
     }
 }

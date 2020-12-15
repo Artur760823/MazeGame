@@ -17,9 +17,7 @@ public class Timer extends AnimationTimer {
     }
 
     public Timer() {
-
     }
-
 
     @Override
     public void handle(long now) {
@@ -34,11 +32,10 @@ public class Timer extends AnimationTimer {
 
         lastMillis = millis;
         graphics.draw();
-        counter--;
     }
 
 
-    public String clock(int counter) {
+    public static String clock(int counter) {
         counter--;
         return String.format("%d", counter);
     }

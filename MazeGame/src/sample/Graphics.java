@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import sample.models.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -22,6 +24,7 @@ public class Graphics {
 
         // Draw the Square
 
+
         Player player = model.getPlayer();
         gc.setFill(player.getColor());
         gc.fillRect(player.getX(), player.getY(), player.getWidth(), player.getHeight());
@@ -31,12 +34,8 @@ public class Graphics {
         gc.setFill(exit.getColor());
         gc.fillRect(exit.getX(), exit.getY(), exit.getWidth(), exit.getHeight());
 
-        // Draw Clock
-        Clock reverseClock = model.getClock();
-        gc.setFill(reverseClock.getColor());
-        gc.fillRect(reverseClock.getX(), reverseClock.getY(), reverseClock.getWidth(), reverseClock.getHeight());
 
-        for (Wall wall: model.getWalls()){
+        for (Wall wall : model.getWalls()) {
             gc.setFill(wall.getColor());
             gc.fillRect(wall.getX(), wall.getY(), wall.getWidth(), wall.getHeight());
             gc.setFill(wall.getColor());
@@ -45,7 +44,7 @@ public class Graphics {
 
         for (GameObject dimond : model.getCoins()) {
             gc.setFill(dimond.getColor());
-            gc.fillOval(dimond.getX(), dimond.getY(), dimond.getWidth() / 2, dimond.getHeight() / 2 );
+            gc.drawImage(model.getDimondShape(),dimond.getX(), dimond.getY());
         }
     }
 

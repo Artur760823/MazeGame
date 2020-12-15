@@ -1,18 +1,19 @@
 package sample.models;
 
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Dimond extends GameObject {
 
     private int dimondID;
 
-    public Dimond(int x, int y, int coinId) {
-        super(x, y, 20, 20, Color.BLANCHEDALMOND);
-        this.dimondID = coinId;
+    public Dimond(int x, int y, int width, int height, Image shape, int dimondID) {
+        super(x, y, width, height, shape);
+        this.dimondID = dimondID;
     }
 
 
-    public int getCoinId() {
+    public int getDimondID() {
         return dimondID;
     }
 }

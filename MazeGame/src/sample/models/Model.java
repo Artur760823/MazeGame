@@ -1,5 +1,7 @@
 package sample.models;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import sample.Timer;
 
@@ -9,10 +11,11 @@ import java.util.Random;
 
 public class Model {
 
-    Timer clock = new Timer();
+    Image dimondShape = new ImageView("/sample/models/resources/tile_gem.png").getImage();
+
     int width;
     int height;
-
+    
     private Player player = new Player(250, 640);
     //Exit Object
     private Exit exit = new Exit(600, 0, 50, 20, Color.RED);
@@ -38,19 +41,10 @@ public class Model {
     private Wall wallNinthTwo = new Wall(0, 600, 950, 20);
     private Wall wallBottom = new Wall(0, 675, 1200, 75);
 
-    private int counter = 1000;
-    private Clock reverseClock = new Clock(0, 750, 50, 50, Color.WHITE, clock.clock(counter));
-
 
     protected ArrayList<Wall> walls = new ArrayList<>();
 
-
     private List<Dimond> dimonds = new ArrayList<>();
-
-
-    public void setWallFirstTwo(Wall wallFirstTwo) {
-        this.wallFirstTwo = wallFirstTwo;
-    }
 
     /**
      * The constructor creates the playing field with all objects.
@@ -74,9 +68,6 @@ public class Model {
         return exit;
     }
 
-    public Clock getClock() {
-        return reverseClock;
-    }
 
     public Wall getWallTopOne() {
         return wallFirstOne;
@@ -177,16 +168,19 @@ public class Model {
     /*
      * Arrangement of objects on the playing field
      */
+
+
+    public Image getDimondShape() {
+        return dimondShape;
+    }
+
+    //TODO - randomnes of dimonds
     private void init(int width, int height) {
+
         Random positionsGenerator = new Random(System.currentTimeMillis());
         int numberOfDimonds = 20;
-        int dimondDiameter = 20;
-        for (int i = 0; i < numberOfDimonds; i++) {
-            int x = positionsGenerator.nextInt(width - dimondDiameter) + dimondDiameter / 2;
-            int y = positionsGenerator.nextInt(height - dimondDiameter) + dimondDiameter / 2;
-            Dimond dimond = new Dimond(x, y, i + 1);
-            this.dimonds.add(dimond);
-        }
+        int dimondDiameter = 10;
+
         walls.add(wallFirstOne);
         walls.add(wallFirstTwo);
         walls.add(wallLeft);
@@ -208,9 +202,20 @@ public class Model {
         walls.add(wallNinthOne);
         walls.add(wallNinthTwo);
         walls.add(wallBottom);
+
+        while (numberOfDimonds > 0) {
+            int x = positionsGenerator.nextInt(width - dimondDiameter) + dimondDiameter / 5;
+            int y = positionsGenerator.nextInt(height - dimondDiameter) + dimondDiameter / 5;
+            Dimond dimond = new Dimond(x, y,35, 40, dimondShape, numberOfDimonds + 1);
+            if (canCreate(dimond)) {
+                this.dimonds.add(dimond);
+                numberOfDimonds--;
+                System.out.println(dimond.getDimondID());
+            }
+        }
     }
 
-    private boolean playerObjectCollider(Player player, GameObject otherObject) {
+    private boolean playerObjectCollider(GameObject player, GameObject otherObject) {
         boolean horizontalCollide = false;
         int squareLeft = player.getX();
         int squareRight = player.getX() + player.getWidth();
@@ -246,7 +251,7 @@ public class Model {
         return null;
     }
 
-    private boolean wallCollider(Player player) {
+    private boolean wallCollider(GameObject player) {
         for (Wall item : walls) {
             if (playerObjectCollider(player, item))
                 return true;
@@ -254,11 +259,21 @@ public class Model {
         return false;
     }
 
+    private boolean exitCollider(GameObject player){
+        if (playerObjectCollider(player, getExit())){
+            System.out.println("Papa");
+            return true;
+        }
+        return false;
+    }
+
+
+
     public void update(long deltaMillis) {
 
         Dimond hitDimond = dimondCollider();
         if (hitDimond != null) {
-            System.out.println("KA-SHING! " + hitDimond.getCoinId());
+            System.out.println("KA-SHING! " + hitDimond.getDimondID());
             dimonds.remove(hitDimond);
         }
     }
@@ -270,4 +285,12 @@ public class Model {
         }
         return true;
     }
+
+    public boolean canCreate(GameObject dimond) {
+        if (wallCollider(dimond)) {
+            return false;
+        }
+        return true;
+    }
+
 }
